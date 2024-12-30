@@ -6,42 +6,11 @@ import 'package:riverpod_todo_2/todo.dart';
 
 void main() => runApp(const ProviderScope(child: MyApp()));
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     var textTheme = Theme.of(context).textTheme;
-
-//     return MaterialApp(
-//       // title: 'Material App',
-//       home: Scaffold(
-//         // appBar: AppBar(
-//         //   title: const Text('Material App Bar'),
-//         // ),
-//         body: SafeArea(
-//           child: Column(
-//             children: [
-//               Text(
-//                 'What needs to be done?',
-//                 style: textTheme.displaySmall,
-//               ),
-//               const Home()
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
-
     return const MaterialApp(
       title: 'Riverpod Todos',
       home: Home(),
