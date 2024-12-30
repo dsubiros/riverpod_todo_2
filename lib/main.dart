@@ -74,7 +74,16 @@ class Home extends HookConsumerWidget {
               },
             ),
             const SizedBox(height: 42.0),
-            ...todos.map((todo) => ListTile(title: Text(todo.description))),
+            ...todos.map(
+              (todo) => Dismissible(
+                key: ValueKey(todo.id),
+                onDismissed: (direction) =>
+                    ref.read(todoListProvider.notifier).remove(todo),
+                child: ListTile(
+                  title: Text(todo.description),
+                ),
+              ),
+            ),
           ],
         ),
       ),
