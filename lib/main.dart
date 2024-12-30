@@ -114,32 +114,39 @@ class TodoItem extends HookConsumerWidget {
     final textFieldFocusNode = useFocusNode();
 
     return Material(
-        color: Colors.white,
-        elevation: 6,
-        child: Focus(
-            focusNode: itemFocusNode,
-            onFocusChange: (focus) {
-              if (focus) {
-                textEditingController.text = todo.description;
-              } else {
-                // Commit changes only when the textfield is unfocused, for performance
-                ref
-                    .read(todoListProvider.notifier)
-                    .edit(id: todo.id, description: textEditingController.text);
-              }
-            },
-            child: ListTile(
-                onTap: () {
-                  itemFocusNode.requestFocus();
-                  textFieldFocusNode.requestFocus();
-                },
-                title: itemIsFocused
-                    ? TextField(
-                        autofocus: true,
-                        focusNode: textFieldFocusNode,
-                        controller: textEditingController,
-                      )
-                    : Text(todo.description))));
+      color: Colors.white,
+      elevation: 6,
+      child: Focus(
+        focusNode: itemFocusNode,
+        onFocusChange: (focus) {
+          if (focus) {
+            textEditingController.text = todo.description;
+          } else {
+            // Commit changes only when the textfield is unfocused, for performance
+            ref
+                .read(todoListProvider.notifier)
+                .edit(id: todo.id, description: textEditingController.text);
+          }
+        },
+        child: ListTile(
+          onTap: () {
+            itemFocusNode.requestFocus();
+            textFieldFocusNode.requestFocus();
+          },
+          leading: Checkbox(
+              value: todo.completed,
+              onChanged: (value) =>
+                  ref.read(todoListProvider.notifier).toggle(todo.id)),
+          title: itemIsFocused
+              ? TextField(
+                  autofocus: true,
+                  focusNode: textFieldFocusNode,
+                  controller: textEditingController,
+                )
+              : Text(todo.description),
+        ),
+      ),
+    );
   }
 }
 
