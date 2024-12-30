@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_todo_2/old/main.dart';
+import 'package:riverpod_todo_2/provider.dart';
 
 void main() => runApp(const ProviderScope(child: MyApp()));
 
@@ -33,12 +33,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class TodoPage extends ConsumerWidget {
+class TodoPage extends HookConsumerWidget {
   const TodoPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(todoListProvider);
+    final data = ref.watch(filteredTodos);
 
     return ListView.builder(
       shrinkWrap: true,
