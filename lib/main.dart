@@ -75,6 +75,8 @@ class Home extends HookConsumerWidget {
               },
             ),
             const SizedBox(height: 42.0),
+            const Toolbar(),
+            const SizedBox(height: 10.0),
             ...todos.map(
               (todo) => Dismissible(
                 key: ValueKey(todo.id),
@@ -88,6 +90,112 @@ class Home extends HookConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Toolbar extends HookConsumerWidget {
+  const Toolbar({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final filter = ref.watch(todoListFilter);
+
+    Color? textColorFor(TodoListFilter value) {
+      return filter == value ? Colors.blue : Colors.black;
+    }
+
+    return Material(
+        child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(child: Text('${ref.watch(uncompletedTodosCount)} items left')),
+        // Tooltip(
+        //   message: 'All',
+        //   child: TextButton(
+        //     onPressed: () {
+        //       ref.watch(todoListFilter.notifier).state = TodoListFilter.all;
+        //     },
+        //     style: ButtonStyle(
+        //         foregroundColor:
+        //             WidgetStatePropertyAll(textColorFor(TodoListFilter.all))),
+        //     child: Text('All'),
+        //   ),
+        // ),
+        ToolbarItem(
+          tooltipText: 'All',
+          filter: TodoListFilter.all,
+          onTap: () =>
+              ref.watch(todoListFilter.notifier).state = TodoListFilter.all,
+        ),
+        ToolbarItem(
+          tooltipText: 'Active',
+          filter: TodoListFilter.active,
+          onTap: () =>
+              ref.watch(todoListFilter.notifier).state = TodoListFilter.active,
+        ),
+        ToolbarItem(
+          tooltipText: 'Complete',
+          filter: TodoListFilter.completed,
+          onTap: () => ref.watch(todoListFilter.notifier).state =
+              TodoListFilter.completed,
+        ),
+        // Tooltip(
+        //   message: 'Active',
+        //   child: TextButton(
+        //     onPressed: () {
+        //       ref.watch(todoListFilter.notifier).state = TodoListFilter.active;
+        //     },
+        //     style: ButtonStyle(
+        //         foregroundColor: WidgetStatePropertyAll(
+        //             textColorFor(TodoListFilter.active))),
+        //     child: Text('Active'),
+        //   ),
+        // ),
+        // Tooltip(
+        //   message: 'Complete',
+        //   child: TextButton(
+        //     onPressed: () {
+        //       ref.watch(todoListFilter.notifier).state =
+        //           TodoListFilter.completed;
+        //     },
+        //     style: ButtonStyle(
+        //         foregroundColor: WidgetStatePropertyAll(
+        //             textColorFor(TodoListFilter.completed))),
+        //     child: const Text('Complete'),
+        //   ),
+        // ),
+      ],
+    ));
+  }
+}
+
+class ToolbarItem extends ConsumerWidget {
+  final TodoListFilter filter;
+  final String tooltipText;
+  final VoidCallback? onTap;
+
+  const ToolbarItem({
+    super.key,
+    required this.filter,
+    required this.tooltipText,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    Color? textColorFor(TodoListFilter value) {
+      return filter == value ? Colors.blue : Colors.black;
+    }
+
+    return Tooltip(
+      message: tooltipText,
+      child: TextButton(
+        onPressed: onTap,
+        style: ButtonStyle(
+            foregroundColor: WidgetStatePropertyAll(textColorFor(filter))),
+        child: Text(tooltipText),
       ),
     );
   }
